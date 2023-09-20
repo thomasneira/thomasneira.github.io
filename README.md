@@ -1,9 +1,3 @@
----
-layout: project
-title: Project 1
-description: An awesome data science project.
----
-
 ## Project Overview
 
 Add your project overview here.
