@@ -1,0 +1,14 @@
+# Data files (keep private if proprietary)
+ExtraaLearn.csv
+
+# Old notebook
+Final Project.ipynb
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.pkl
+
+# OS
+.DS_Store
