@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thomas Neira — Data Scientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f9f7;
+      --surface: #ffffff;
+      --border: #e5e5e0;
+      --text: #1a1a18;
+      --muted: #6b6b65;
+      --accent: #1a3a5c;
+      --accent-light: #e8f0f8;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* LAYOUT */
+    .container { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
+
+    /* HERO */
+    .hero {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 0.55rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #0f2640; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-secondary:hover { background: var(--accent-light); }
+
+    /* SECTIONS */
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    /* PROJECT CARD */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .project-card:hover { border-color: #c0c0b8; }
+    .project-meta {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+    .project-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .project-card .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .project-card p {
+      font-size: 0.925rem;
+      color: #3a3a38;
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+    .metric { text-align: center; }
+    .metric-value {
+      font-family: var(--mono);
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--accent);
+      display: block;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .project-footer .finding {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      max-width: 420px;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-group h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .skill-group ul { list-style: none; }
+    .skill-group li {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-group li:last-child { border-bottom: none; }
+
+    /* ABOUT */
+    .about-text {
+      font-size: 1rem;
+      color: #3a3a38;
+      line-height: 1.8;
+      max-width: 640px;
+    }
+    .about-text + .about-text { margin-top: 1rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+    footer p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-name" href="#">Thomas Neira</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <header class="hero">
+      <p class="hero-label">Data Scientist</p>
+      <h1>Turning complex data<br>into clear business decisions.</h1>
+      <p>
+        I build predictive models and analytical frameworks that solve real problems —
+        grounded in statistical rigor and focused on measurable impact.
+      </p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="#projects">View Projects</a>
+        <a class="btn btn-secondary" href="https://github.com/thomasneira" target="_blank">GitHub</a>
+      </div>
+    </header>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <p class="section-label">Projects</p>
+
+      <div class="project-card">
+        <div class="project-meta">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">Statistics</span>
+          <span class="tag">Python</span>
+        </div>
+        <h3>Lead Conversion Optimization — ExtraaLearn</h3>
+        <p class="subtitle">EdTech · Predictive Analytics · Sales Strategy</p>
+        <p>
+          Built an end-to-end predictive pipeline to identify which leads are most likely
+          to convert for an EdTech startup. Compared four models with full cross-validation,
+          validated all findings with formal hypothesis testing, and translated results into
+          a tiered go-to-market strategy with quantified ROI.
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-value">86%</span>
+            <span class="metric-label">Model Recall</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">0.89</span>
+            <span class="metric-label">ROC-AUC</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">4.3×</span>
+            <span class="metric-label">Channel Lift</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">$847K</span>
+            <span class="metric-label">Projected Annual Impact</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <span class="finding">
+            Website-first leads convert 4.3× more than mobile app leads
+            (χ² = 612.4, p &lt; 0.001, Cramér's V = 0.36)
+          </span>
+          <a class="btn btn-primary" href="ExtraaLearn_Analysis.html" target="_blank">View Analysis →</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <p class="section-label">Skills</p>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h4>Languages & Tools</h4>
+          <ul>
+            <li>Python</li>
+            <li>SQL</li>
+            <li>pandas / NumPy</li>
+            <li>Git</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Machine Learning</h4>
+          <ul>
+            <li>scikit-learn</li>
+            <li>XGBoost</li>
+            <li>Cross-validation</li>
+            <li>Feature engineering</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Statistics</h4>
+          <ul>
+            <li>Hypothesis testing</li>
+            <li>Effect size analysis</li>
+            <li>A/B testing</li>
+            <li>Regression modeling</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Visualization</h4>
+          <ul>
+            <li>matplotlib / seaborn</li>
+            <li>Jupyter Notebooks</li>
+            <li>Data storytelling</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <p class="section-label">About</p>
+      <p class="about-text">
+        I'm a data scientist with a focus on applied analytics — building models that
+        decision-makers can understand and act on. My background combines quantitative
+        methods with business strategy, which means I care as much about the "so what"
+        as the statistical output.
+      </p>
+      <p class="about-text" style="margin-top:1rem;">
+        Currently open to data science, analytics, and ML roles.
+        Reach me at
+        <a href="mailto:thomasneira@uchicago.edu" style="color:var(--accent);">thomasneira@uchicago.edu</a>
+        or on <a href="https://github.com/thomasneira" target="_blank" style="color:var(--accent);">GitHub</a>.
+      </p>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Thomas Neira · <a href="https://github.com/thomasneira">github.com/thomasneira</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
