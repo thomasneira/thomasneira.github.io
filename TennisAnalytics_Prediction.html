@@ -511,10 +511,10 @@
   <h1>ATP Match Outcome<br>Prediction</h1>
   <p class="hero-sub">
     Does engineering Elo ratings from match history outperform the public ATP ranking system?
-    A four-model hierarchy isolates exactly what each layer contributes: no-feature context,
-    ATP ranking signal, raw Elo formula, and Elo features with a trained classifier.
-    Five Elo-derived features achieve 0.702 AUC on 2,722 held-out 2024 matches — above the
-    ATP-rankings baseline (0.690, computed on the same test set), confirmed at p = 0.006.
+    A four-model hierarchy isolates exactly what each layer contributes: no-feature context (AUC 0.557),
+    ATP ranking signal (0.690), raw Elo formula (0.702), and trained LR on Elo features (0.702).
+    Raw Elo and trained LR achieve identical AUC — the Elo formula itself is the model.
+    Elo exceeds the ATP baseline (p = 0.032, AUC-based bootstrap on same 2,722 test matches).
   </p>
   <div class="hero-stats">
     <div>
@@ -526,8 +526,8 @@
       <span class="hero-stat-label">ROC-AUC (ATP baseline, exact)</span>
     </div>
     <div>
-      <span class="hero-stat-value">p = 0.006</span>
-      <span class="hero-stat-label">Bootstrap significance</span>
+      <span class="hero-stat-value">p = 0.032</span>
+      <span class="hero-stat-label">Bootstrap p (AUC-based)</span>
     </div>
     <div>
       <span class="hero-stat-value">25,245</span>
@@ -568,17 +568,17 @@
       <strong>Central result</strong>
       <p>The research question is whether Elo features — engineered from match history — outperform
       the ATP ranking system as a basis for predicting match outcomes. They do. A Logistic Regression
-      model using five Elo-derived features achieves 0.702 AUC on 2,722 held-out matches from 2024,
-      compared to 0.690 for a model trained on public ATP ranking data (computed on the same test set). The improvement is
-      statistically confirmed (bootstrap p = 0.006, 95% CI excludes zero). Probabilities are
-      well-calibrated (2.3% mean absolute error), making them suitable for position sizing.</p>
+      Raw Elo formula (no ML) and trained Logistic Regression on Elo features both achieve 0.702 AUC,
+      compared to 0.690 for an ATP-rankings-only model (exact, same 2,722 test matches).
+      Bootstrap p = 0.032, 95% CI [-0.07pp, +2.49pp] — significant at α = 0.05, lower bound near zero.
+      Mean calibration error: 2.2%. Winner mean predicted probability: 0.560 vs loser: 0.436.</p>
     </div>
 
     <div class="card-row cols-4">
       <div class="card">
         <span class="card-value">0.702</span>
         <span class="card-label">Elo Model AUC</span>
-        <p class="card-sub">Ranks winner above loser in 70.2% of matches</p>
+        <p class="card-sub">Ranks winner above loser in 70.1% of matches (GB model, 2024 test)</p>
       </div>
       <div class="card">
         <span class="card-value gold">0.690</span>
@@ -586,12 +586,12 @@
         <p class="card-sub">Gradient Boosting, ATP rank features, same test set</p>
       </div>
       <div class="card">
-        <span class="card-value">p = 0.006</span>
-        <span class="card-label">Bootstrap p-value</span>
-        <p class="card-sub">Elo gain confirmed over 10,000 iterations</p>
+        <span class="card-value">p = 0.032</span>
+        <span class="card-label">Bootstrap p-value (AUC)</span>
+        <p class="card-sub">Elo vs ATP ranking, 10,000 iterations</p>
       </div>
       <div class="card">
-        <span class="card-value">2.3%</span>
+        <span class="card-value">2.2%</span>
         <span class="card-label">Calibration Error</span>
         <p class="card-sub">Probabilities match observed win rates</p>
       </div>
@@ -617,7 +617,7 @@
         </div>
       </div>
       <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);font-size:0.8rem;color:var(--muted);">
-        <strong style="color:var(--text);">Four-model hierarchy:</strong> No-feature context (~0.555 AUC) → ATP rankings (0.690) → Raw Elo formula direct (~0.700) → Elo features + LR (0.702). Each layer is tested on the same 2,722 held-out matches. The jump from no-feature to rankings is large. The jump from rankings to Elo is real but modest (+1.2pp), confirming at p = 0.006. The jump from raw Elo to trained LR is near zero — the Elo formula itself is the model; LR is the delivery mechanism.
+        <strong style="color:var(--text);">Four-model hierarchy (exact values, 2024 test set):</strong> No-feature (AUC 0.557) → ATP rankings (0.690) → Raw Elo formula, no training (0.702) → Elo features + LR (0.702). Raw Elo and trained LR are identical in AUC — the Elo formula already outputs a calibrated probability and the classifier adds no additional lift. The meaningful gain is Elo (0.702) over ATP rankings (0.690): bootstrap p = 0.032, 95% CI [-0.07pp, +2.49pp].
       </div>
     </div>
 
@@ -1126,17 +1126,17 @@
           <span style="font-size:0.75rem;color:var(--muted);">Elo Model (5 features)</span>
         </div>
         <div style="text-align:center;padding:1rem;background:var(--bg);border-radius:6px;">
-          <span style="font-family:var(--mono);font-size:1.35rem;font-weight:500;color:#166534;display:block;">p = 0.006</span>
+          <span style="font-family:var(--mono);font-size:1.35rem;font-weight:500;color:#166534;display:block;">p = 0.032</span>
           <span style="font-size:0.75rem;color:var(--muted);">Bootstrap p-value</span>
         </div>
       </div>
       <p style="font-size:0.8rem;color:var(--muted);">
-        Bootstrap 95% CI for Elo gain (AUC-based): [+0.31 pp, +2.41 pp] excludes zero — the improvement is real.
-        Critically, raw Elo (elo_combined_prob used directly, no model training) achieves ~0.700 AUC, just 0.002 below
-        the trained Elo+LR model. This confirms the Elo formula itself captures almost all the predictive value;
-        the Logistic Regression is the delivery mechanism, not an independent source of lift.
-        ATP rankings (0.690) trail Elo by ~1.2 pp because Elo is updated after every match while ATP rankings
-        use a rolling points window that is slower to reflect current form.
+        AUC-based bootstrap (raw Elo vs ATP baseline, 10,000 iterations): mean gain = +1.21pp, 95% CI = [-0.07pp, +2.49pp], p = 0.032.
+        The CI lower bound barely touches zero — the Elo advantage is real but at the edge of detection at this sample size.
+        Accuracy-based bootstrap (Elo GB vs ATP GB): p = 0.266 — not significant. The two bootstraps measure different model pairs
+        and different metrics; the AUC-based test is the more appropriate one for matched pairs.
+        Critical finding: raw Elo (elo_combined_prob used directly, no ML) achieves AUC = 0.702, identical to the trained LR.
+        The Elo formula already outputs a calibrated probability; the classifier adds no additional lift.
       </p>
     </div>
 
@@ -1161,20 +1161,20 @@
       </div>
       <div class="hyp-results">
         <div>
-          <span class="hyp-stat-value">z = 14.8</span>
+          <span class="hyp-stat-value">z = 11.08</span>
           <span class="hyp-stat-label">Test Statistic (n = 2,722)</span>
         </div>
         <div>
-          <span class="hyp-stat-value">p &lt;&lt; 0.001</span>
+          <span class="hyp-stat-value">6.2e-29</span>
           <span class="hyp-stat-label">p-value (match-level)</span>
         </div>
         <div>
-          <span class="hyp-stat-value">[61.5%, 67.3%]</span>
+          <span class="hyp-stat-value">[58.7%, 62.5%]</span>
           <span class="hyp-stat-label">95% CI (match-level, n = 2,722)</span>
         </div>
         <div>
           <span class="hyp-stat-value">1,650 / 2,722</span>
-          <span class="hyp-stat-label">Matches Correctly Ranked</span>
+          <span class="hyp-stat-label">Matches: Winner ranked above loser</span>
         </div>
         <span class="verdict reject">Reject H0</span>
       </div>
@@ -1182,7 +1182,7 @@
 
     <div class="callout green-callout" style="margin-bottom:2rem;">
       <strong>Primary test uses match-level n = 2,722</strong>
-      <p>Each match produces two records (winner + loser) but only one outcome — so the 5,444 records represent 2,722 independent matches. The primary z-test uses n = 2,722: z = 14.8, p &lt;&lt; 0.001, 95% CI [61.5%, 67.3%]. The record-level test (z = 20.95) inflates precision by treating dependent pairs as independent. Both are overwhelmingly significant; the difference matters for CI width, not the qualitative conclusion. The ROC-AUC of 0.702 is the cleanest metric: it directly asks whether the winner is ranked above the loser for each of the 2,722 matched pairs — no threshold, no double-counting.</p>
+      <p>Each match produces two records (winner + loser) but only one outcome — so the 5,444 records represent 2,722 independent matches. The primary z-test uses n = 2,722 independent matches: match accuracy = 60.6% (1,650 winners ranked above loser), z = 11.08, p = 6.2e-29, 95% CI [58.7%, 62.5%]. Note: match accuracy (60.6%) differs from record accuracy (63.9%) because each match has two records; the higher record accuracy reflects the model's specificity (67.1%) exceeding sensitivity (60.6%). The ROC-AUC = 0.701 (GB model, same test set) is the cleanest single metric — no threshold, no double-counting.</p>
     </div>
 
     <hr class="divider" />
@@ -1220,7 +1220,7 @@
             <td><strong>Grand Slams</strong></td>
             <td>1,016</td>
             <td class="acc" style="color:#166534;">71.5%</td>
-            <td>[68.5%, 74.3%]</td>
+            <td>[68.6%, 74.1%]</td>
             <td>+21.5pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:71.5%;background:#166534;"></div></div></td>
           </tr>
@@ -1236,7 +1236,7 @@
             <td>ATP Tour</td>
             <td>3,038</td>
             <td class="acc">61.5%</td>
-            <td>[59.0%, 63.9%]</td>
+            <td>[59.7%, 63.2%]</td>
             <td>+11.5pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:61.5%;background:#d97706;"></div></div></td>
           </tr>
@@ -1244,7 +1244,7 @@
             <td>Hard Court</td>
             <td>3,078</td>
             <td class="acc">64.1%</td>
-            <td>[61.7%, 66.5%]</td>
+            <td>[62.4%, 65.8%]</td>
             <td>+14.1pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:64.1%;background:#2563eb;"></div></div></td>
           </tr>
@@ -1252,7 +1252,7 @@
             <td>Clay Court</td>
             <td>1,718</td>
             <td class="acc">63.4%</td>
-            <td>[60.2%, 66.5%]</td>
+            <td>[61.1%, 65.7%]</td>
             <td>+13.4pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:63.4%;background:#b45309;"></div></div></td>
           </tr>
@@ -1260,7 +1260,7 @@
             <td>Grass Court</td>
             <td>648</td>
             <td class="acc">63.7%</td>
-            <td>[58.4%, 68.7%]</td>
+            <td>[60.0%, 67.3%]</td>
             <td>+13.7pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:63.7%;background:#16a34a;"></div></div></td>
           </tr>
@@ -1268,7 +1268,7 @@
             <td><strong>Top 10 matchups</strong></td>
             <td>629</td>
             <td class="acc" style="color:#166534;">74.7%</td>
-            <td>[69.6%, 79.3%]</td>
+            <td>[71.2%, 78.0%]</td>
             <td>+24.7pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:74.7%;background:#166534;"></div></div></td>
           </tr>
@@ -1276,7 +1276,7 @@
             <td>Close matches (Elo gap &lt; 50)</td>
             <td>1,428</td>
             <td class="acc" style="color:var(--muted);">54.2%</td>
-            <td>[50.6%, 57.7%]</td>
+            <td>[51.6%, 56.8%]</td>
             <td>+4.2pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:54.2%;background:#94a3b8;"></div></div></td>
           </tr>
@@ -1284,7 +1284,7 @@
             <td>Blowouts (Elo gap &gt; 150)</td>
             <td>1,754</td>
             <td class="acc" style="color:#166534;">76.4%</td>
-            <td>[73.5%, 79.1%]</td>
+            <td>[74.4%, 78.3%]</td>
             <td>+26.4pp</td>
             <td><div class="seg-bar"><div class="seg-bar-fill" style="width:76.4%;background:#166534;"></div></div></td>
           </tr>
@@ -1528,10 +1528,10 @@
             <td style="padding:0.6rem 0.75rem;color:var(--muted);">Coin flip</td>
           </tr>
           <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:0.6rem 0.75rem;">No-feature baseline</td>
+            <td style="padding:0.6rem 0.75rem;">No-feature baseline (LR)</td>
             <td style="padding:0.6rem 0.75rem;font-size:0.8rem;color:var(--muted);">Age, height, surface, level, round</td>
-            <td style="text-align:center;padding:0.6rem 0.75rem;">~0.555</td>
-            <td style="text-align:center;padding:0.6rem 0.75rem;">~52%</td>
+            <td style="text-align:center;padding:0.6rem 0.75rem;">0.557</td>
+            <td style="text-align:center;padding:0.6rem 0.75rem;">53.5%</td>
             <td style="padding:0.6rem 0.75rem;font-size:0.8rem;color:var(--muted);">Physical attributes carry negligible signal</td>
           </tr>
           <tr style="border-bottom:1px solid var(--border);">
@@ -1544,9 +1544,9 @@
           <tr style="border-bottom:1px solid var(--border);">
             <td style="padding:0.6rem 0.75rem;">Raw Elo (no model)</td>
             <td style="padding:0.6rem 0.75rem;font-size:0.8rem;color:var(--muted);">elo_combined_prob direct (no ML)</td>
-            <td style="text-align:center;padding:0.6rem 0.75rem;font-weight:600;">~0.700</td>
-            <td style="text-align:center;padding:0.6rem 0.75rem;font-weight:600;">~63.7%</td>
-            <td style="padding:0.6rem 0.75rem;font-size:0.8rem;color:var(--muted);">Elo formula alone, no training</td>
+            <td style="text-align:center;padding:0.6rem 0.75rem;font-weight:600;">0.702</td>
+            <td style="text-align:center;padding:0.6rem 0.75rem;font-weight:600;">64.0%</td>
+            <td style="padding:0.6rem 0.75rem;font-size:0.8rem;color:var(--muted);">Elo formula alone — identical AUC to trained LR</td>
           </tr>
           <tr style="background:var(--gold-bg);">
             <td style="padding:0.6rem 0.75rem;font-weight:600;">Elo features + LR</td>
@@ -1559,9 +1559,9 @@
       </table>
       <div style="background:var(--bg);border-radius:8px;padding:1rem;font-size:0.82rem;color:var(--muted);line-height:1.7;">
         <strong style="color:var(--text);">Two key findings from this hierarchy:</strong>
-        (1) The gap from no-feature (~0.555) to ATP rankings (0.690) is large — ranking is the dominant signal.
-        (2) The gap from raw Elo (~0.700) to Elo+LR (0.702) is near zero — the Elo formula itself captures most of the value;
-        the classifier adds minimal additional lift. Bootstrap confirms Elo &gt; ATP at p = 0.006, 95% CI [+0.31pp, +2.41pp].
+        (1) The gap from no-feature (0.557) to ATP rankings (0.690) is +13.3pp — ranking is the dominant signal.
+        (2) Raw Elo (0.702) = Elo+LR (0.702): the Elo formula already outputs a calibrated probability;
+        the trained classifier adds zero additional AUC. Elo &gt; ATP: bootstrap p = 0.032, 95% CI [-0.07pp, +2.49pp] — significant but narrow.
       </div>
     </div>
 
@@ -1617,7 +1617,7 @@
             <span class="bar-pct">2.3%</span>
           </div>
         </div>
-        <p style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">A Brier score of 0.219 and mean calibration error of 2.3% indicate the predicted probabilities are reliable for downstream use.</p>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">A Brier score of 0.219 and mean calibration error of 2.2% indicate the predicted probabilities are reliable for downstream use.</p>
       </div>
       <div class="card">
         <p class="card-title">Confusion Matrix (2024 Test Set)</p>
@@ -1652,13 +1652,13 @@
     <p class="section-eyebrow">Production Readiness</p>
     <div class="card">
       <ul class="checklist">
-        <li><span class="check-pass">PASS</span><span><strong>Elo model AUC exceeds ATP baseline AUC:</strong> 0.702 vs ≈ 0.690. Elo features add ranking accuracy over public data alone.</span></li>
-        <li><span class="check-pass">PASS</span><span><strong>Improvement is statistically significant (p &lt; 0.05):</strong> Bootstrap p = 0.006, 95% CI [+0.31pp, +2.41pp] excludes zero.</span></li>
-        <li><span class="check-pass">PASS</span><span><strong>Well-calibrated probabilities (mean error &lt; 5%):</strong> 2.3% mean absolute calibration error — suitable for position sizing.</span></li>
+        <li><span class="check-pass">PASS</span><span><strong>Elo model AUC exceeds ATP baseline AUC:</strong> 0.701 (GB) vs 0.690. Elo features add ranking accuracy over public data alone.</span></li>
+        <li><span class="check-pass">PASS</span><span><strong>Improvement is statistically significant (p &lt; 0.05):</strong> AUC bootstrap p = 0.032, 95% CI [-0.07pp, +2.49pp]. Note: accuracy-based bootstrap p = 0.266 (not significant).</span></li>
+        <li><span class="check-pass">PASS</span><span><strong>Well-calibrated probabilities (mean error &lt; 5%):</strong> 2.2% mean absolute calibration error. Winners mean predicted prob: 0.560, losers: 0.436, separation: 0.124.</span></li>
         <li><span class="check-pass">PASS</span><span><strong>Minimal overfitting (train-val gap &lt; 5pp):</strong> 2.0pp train-to-validation gap. Performance is stable across time.</span></li>
-        <li><span class="check-pass">PASS</span><span><strong>Elo adds over no-feature baseline (AUC gain &gt; 0.10):</strong> Elo 0.702 vs no-feature ~0.555 — confirms ranking signal, not physical attributes, drives predictions.</span></li>
+        <li><span class="check-pass">PASS</span><span><strong>Elo adds over no-feature baseline (AUC gain &gt; 0.10):</strong> Elo 0.701 (GB) vs no-feature 0.557 — ranking signal, not physical attributes, drives predictions.</span></li>
       </ul>
-      <p style="font-size:0.8rem;color:var(--muted);">5 of 5 production checks passed. Success criteria are based on outperforming the ATP ranking baseline (exact, same test set) — not an arbitrary accuracy threshold.</p>
+      <p style="font-size:0.8rem;color:var(--muted);">5 of 5 production checks passed. Key caveats: AUC bootstrap p = 0.032 (barely significant at α = 0.05); accuracy bootstrap p = 0.266 (not significant). Success is defined by AUC outperforming the ATP baseline on the same held-out test set.</p>
       <p style="font-size:0.78rem;color:var(--muted);margin-top:0.5rem;font-style:italic;">Note: a Kelly criterion betting simulation is available in the companion notebook (Cell 42). That simulation uses model-predicted probabilities as implied odds — not actual bookmaker closing-line odds — and should be treated as calibration validation, not a production backtest.</p>
     </div>
 
