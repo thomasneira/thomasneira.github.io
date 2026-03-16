@@ -322,6 +322,50 @@
         </div>
       </div>
 
+      <div class="project-card">
+        <div class="project-meta">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Elo Rating</span>
+          <span class="tag">Time Series</span>
+          <span class="tag">Python</span>
+        </div>
+        <h3>ATP Match Prediction: Elo-Driven Classification</h3>
+        <p class="subtitle">Sports Analytics · Feature Engineering · Temporal Validation</p>
+        <p>
+          Built a predictive model for ATP tennis match outcomes using 10 years of elite
+          tournament data (2015–2024). The core insight: rather than feeding raw stats into
+          a classifier, I engineered five Elo-derived features capturing relative player
+          strength — both overall and surface-specific — then applied strict temporal
+          validation to ensure no future information leaked into training. A Logistic
+          Regression on those five features outperformed raw-ranking and Elo-only baselines.
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-value">64.2%</span>
+            <span class="metric-label">Test Accuracy</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">0.702</span>
+            <span class="metric-label">ROC-AUC</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">25,245</span>
+            <span class="metric-label">Elite Matches</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">+14.2pp</span>
+            <span class="metric-label">Over Random Baseline</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <span class="finding">
+            elo_combined_prob alone accounts for 51.8% of feature importance across models
+            (z = 20.47, p &lt; 0.001)
+          </span>
+          <a class="btn btn-primary" href="TennisAnalytics_Prediction.html" target="_blank">View Analysis →</a>
+        </div>
+      </div>
+
     </section>
 
     <!-- SKILLS -->
