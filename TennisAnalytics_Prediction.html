@@ -1081,10 +1081,11 @@
     <div class="card" style="margin-bottom:2rem;">
       <p style="font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Elo vs ATP Ranking Baseline · Bootstrap Hypothesis Test</p>
       <p style="font-size:0.875rem;margin-bottom:1rem;">
-        The ATP ranking baseline uses the same classifier architecture trained on raw ranking features only
-        (rank_diff, rank_ratio, is_favorite, player_rank_log, opponent_rank_log) — no Elo. The bootstrap
-        test (10,000 iterations) asks whether the Elo model's accuracy gain is statistically distinguishable
-        from noise.
+        The ATP ranking baseline uses the same Gradient Boosting architecture trained on raw ranking features
+        only (rank_diff, rank_ratio, is_favorite, player_rank_log, opponent_rank_log) — no Elo. This
+        comparison uses the Gradient Boosting model (63.9%) for apples-to-apples architecture matching.
+        The selected Logistic Regression model achieves 64.2%, a larger margin over the ATP baseline (+0.8pp).
+        The bootstrap test (10,000 iterations) asks whether the Elo gain is statistically distinguishable from noise.
       </p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;">
         <div style="text-align:center;padding:1rem;background:var(--bg);border-radius:6px;">
@@ -1114,7 +1115,7 @@
     <div class="hyp-card">
       <div style="margin-bottom:1rem;">
         <span class="section-eyebrow" style="margin-bottom:0.25rem;">Test: Is model accuracy significantly above chance?</span>
-        <p style="font-size:0.9rem;font-weight:600;">One-sample z-test for proportion on 2024 test set (n = 5,444)</p>
+        <p style="font-size:0.9rem;font-weight:600;">One-sample z-test for proportion · Logistic Regression model · 2024 test set (n = 5,444)</p>
       </div>
       <div class="hyp-hypotheses">
         <div>
@@ -1128,19 +1129,19 @@
       </div>
       <div class="hyp-results">
         <div>
-          <span class="hyp-stat-value">z = 20.47</span>
+          <span class="hyp-stat-value">z = 20.95</span>
           <span class="hyp-stat-label">Test Statistic</span>
         </div>
         <div>
-          <span class="hyp-stat-value">p = 1.83e-94</span>
+          <span class="hyp-stat-value">p = 8.77e-98</span>
           <span class="hyp-stat-label">p-value</span>
         </div>
         <div>
-          <span class="hyp-stat-value">[62.6%, 65.1%]</span>
+          <span class="hyp-stat-value">[62.9%, 65.5%]</span>
           <span class="hyp-stat-label">95% Confidence Interval</span>
         </div>
         <div>
-          <span class="hyp-stat-value">3,477 / 5,444</span>
+          <span class="hyp-stat-value">3,495 / 5,444</span>
           <span class="hyp-stat-label">Correct / Total Predictions</span>
         </div>
         <span class="verdict reject">Reject H0</span>
@@ -1149,8 +1150,8 @@
 
     <div class="callout green-callout" style="margin-bottom:2rem;">
       <strong>The result is not a statistical artifact</strong>
-      <p>With a z-score of 20.47 and p-value of 1.83e-94, there is no plausible random explanation for
-      the model's performance. The 95% confidence interval of [62.6%, 65.1%] is well above 50% at
+      <p>With a z-score of 20.95 and p-value of 8.77e-98, there is no plausible random explanation for
+      the model's performance. The 95% confidence interval of [62.9%, 65.5%] is well above 50% at
       both bounds. This also rules out lucky draws in the test year: 5,444 matches across a full
       ATP season is a stable and representative sample.</p>
     </div>
