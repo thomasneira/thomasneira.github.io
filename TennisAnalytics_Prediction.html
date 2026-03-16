@@ -1030,6 +1030,85 @@
 
     <hr class="divider" />
 
+    <p class="section-eyebrow">Step 2 of 2 · Physical Attributes and Elo Value (Player-Level Dataset)</p>
+    <h2 class="section-title" style="font-size:1.5rem;margin-bottom:0.6rem;">Do Height and Age Help? Does Elo Add Over Rankings?</h2>
+    <p class="section-desc" style="margin-bottom:1.25rem;">
+      Two follow-up questions from the EDA. Both are answered with formal tests on the player-level dataset (50,490 records).
+    </p>
+
+    <div class="card" style="margin-bottom:1.25rem;">
+      <p style="font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Physical Attributes · Mann-Whitney U Test</p>
+      <p style="font-size:0.875rem;margin-bottom:1rem;">
+        Winners and losers are compared on height differential and age differential using a non-parametric
+        test (Mann-Whitney U), which makes no normality assumption. With ~50k records, even tiny effects
+        reach statistical significance — effect size r is the meaningful metric, not the p-value alone.
+      </p>
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border);">
+            <th style="text-align:left;padding:0.5rem 0.75rem;font-weight:600;">Variable</th>
+            <th style="text-align:center;padding:0.5rem 0.75rem;font-weight:600;">r (point-biserial)</th>
+            <th style="text-align:center;padding:0.5rem 0.75rem;font-weight:600;">p-value</th>
+            <th style="text-align:center;padding:0.5rem 0.75rem;font-weight:600;">Effect size</th>
+            <th style="text-align:left;padding:0.5rem 0.75rem;font-weight:600;">Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.5rem 0.75rem;font-family:var(--mono);font-size:0.8rem;">height_diff</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">0.103</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">&lt; 0.001</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">negligible</td>
+            <td style="padding:0.5rem 0.75rem;color:#92400e;">Significant but not useful</td>
+          </tr>
+          <tr>
+            <td style="padding:0.5rem 0.75rem;font-family:var(--mono);font-size:0.8rem;">age_diff</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">0.046</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">&lt; 0.001</td>
+            <td style="text-align:center;padding:0.5rem 0.75rem;">negligible</td>
+            <td style="padding:0.5rem 0.75rem;color:#6b6b65;">Noise</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:0.75rem;">
+        Effect size r &lt; 0.1 is considered negligible by convention (Cohen, 1988). Both variables are statistically
+        detectable only because of the large sample, not because the signal is meaningful. Height and age were
+        excluded from the model: including them actively reduces accuracy (ablation testing confirmed removing
+        physical attributes yields a +0.4 pp accuracy improvement).
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+      <p style="font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Elo vs ATP Ranking Baseline · Bootstrap Hypothesis Test</p>
+      <p style="font-size:0.875rem;margin-bottom:1rem;">
+        The ATP ranking baseline uses the same classifier architecture trained on raw ranking features only
+        (rank_diff, rank_ratio, is_favorite, player_rank_log, opponent_rank_log) — no Elo. The bootstrap
+        test (10,000 iterations) asks whether the Elo model's accuracy gain is statistically distinguishable
+        from noise.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;">
+        <div style="text-align:center;padding:1rem;background:var(--bg);border-radius:6px;">
+          <span style="font-family:var(--mono);font-size:1.35rem;font-weight:500;color:var(--muted);display:block;">63.4%</span>
+          <span style="font-size:0.75rem;color:var(--muted);">ATP Rankings Only</span>
+        </div>
+        <div style="text-align:center;padding:1rem;background:var(--bg);border-radius:6px;">
+          <span style="font-family:var(--mono);font-size:1.35rem;font-weight:500;color:var(--gold-bar);display:block;">63.9%</span>
+          <span style="font-size:0.75rem;color:var(--muted);">Elo Model (5 features)</span>
+        </div>
+        <div style="text-align:center;padding:1rem;background:var(--bg);border-radius:6px;">
+          <span style="font-family:var(--mono);font-size:1.35rem;font-weight:500;color:#166534;display:block;">p = 0.006</span>
+          <span style="font-size:0.75rem;color:var(--muted);">Bootstrap p-value</span>
+        </div>
+      </div>
+      <p style="font-size:0.8rem;color:var(--muted);">
+        Bootstrap 95% CI for Elo gain: [+0.31 pp, +2.41 pp]. The confidence interval excludes zero, confirming
+        the Elo improvement is real and not sampling noise. The Elo system adds value because it accumulates
+        match-by-match performance history that raw ATP rankings — updated weekly on a points system — do not fully capture.
+      </p>
+    </div>
+
+    <hr class="divider" />
+
     <p class="section-eyebrow">Hypothesis Test · Model Significance</p>
 
     <div class="hyp-card">
