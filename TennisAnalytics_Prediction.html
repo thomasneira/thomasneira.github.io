@@ -970,18 +970,20 @@
 
     <hr class="divider" />
 
-    <p class="section-eyebrow">Correlation Analysis (EDA, Full Dataset)</p>
-    <h2 class="section-title" style="font-size:1.5rem;margin-bottom:0.6rem;">Which Variables Correlate with Match Outcome?</h2>
+    <p class="section-eyebrow">Step 1 of 2 · Raw Signal EDA (Pre-Feature Engineering, Raw Match Data)</p>
+    <h2 class="section-title" style="font-size:1.5rem;margin-bottom:0.6rem;">Which Raw Variables Carry Signal?</h2>
     <p class="section-desc" style="margin-bottom:1.25rem;">
-      Point-biserial correlations between pre-match variables and binary match outcome (win/loss).
-      Computed before model training to identify which variables carry genuine signal.
+      Point-biserial correlations between raw match variables and binary outcome (win/loss), computed on
+      the original ATP match dataset before any feature engineering. These are <em>not</em> the model's
+      input features — they establish which underlying dimensions carry predictive signal and motivate
+      the Elo engineering approach.
     </p>
 
     <div class="card" style="margin-bottom:2rem;">
       <div class="bar-chart">
         <div class="bar-row">
           <span class="bar-label" style="min-width:180px;">rank_diff</span>
-          <div class="bar-track"><div class="bar-fill gold" style="width:100%">r = 0.515 — strong</div></div>
+          <div class="bar-track"><div class="bar-fill gold" style="width:100%">r = 0.515</div></div>
           <span class="bar-pct">0.515</span>
         </div>
         <div class="bar-row">
@@ -1018,11 +1020,12 @@
     </div>
 
     <div class="callout">
-      <strong>Ranking differential is the dominant pre-match signal</strong>
-      <p>The correlation of 0.515 between raw ranking differential and outcome is strong by sports analytics standards.
-      Height difference carries a weak but nonzero signal (r = 0.103). Age variables are close to noise.
-      These correlations justify Elo as the primary feature vehicle: Elo is a function of accumulated match results,
-      which are themselves a function of ranking-quality matchups over time.</p>
+      <strong>This is not what the model sees — it is why the model uses Elo</strong>
+      <p>Ranking differential (r = 0.515) is the strongest pre-match signal by a wide margin. Age and height
+      carry negligible information. The model does not use any of these raw variables directly. Instead, the
+      five engineered Elo features encode this same ranking signal through a dynamic rating system updated after
+      every match — capturing not just current rank but accumulated surface-specific performance over time.
+      The chart below (Step 2) shows how those five Elo features distribute their importance inside the model.</p>
     </div>
 
     <hr class="divider" />
