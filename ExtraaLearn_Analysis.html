@@ -501,23 +501,24 @@
     <p class="section-eyebrow">Model Summary</p>
     <h2 class="section-title" style="font-size:1.6rem;margin-bottom:0.75rem;">XGBoost Selected as Best Model</h2>
     <p class="section-desc" style="margin-bottom:1.5rem;">
-      Four models were trained using 5-fold cross-validation with recall as the primary metric,
-      chosen because missing a likely converter costs more than a wasted sales call. Final metrics
-      were evaluated on a held-out test set of 1,384 leads (30% of the data). XGBoost achieved the
-      highest ROC-AUC (0.920) and cross-validated recall (87.9%), making it the most reliable choice
-      even though the Decision Tree edged it on single-run test recall (90.1% vs 88.1%).
+      All four models were tuned via cross-validated hyperparameter search with recall as the
+      primary metric. XGBoost achieved the highest ROC-AUC (0.920) and best cross-validated
+      recall (87.9% ± 2.3%), making it the most reliable production choice. Recall was chosen
+      over accuracy because missing a likely converter (~$5,000 lost) costs far more than a
+      wasted outreach call (~$50). Optimal classification threshold was tuned post-training;
+      model calibration was verified before applying probabilities to business impact calculations.
     </p>
 
     <div class="card-row cols-4">
       <div class="card">
         <span class="card-value">87.9%</span>
-        <span class="card-label">CV Recall</span>
-        <p class="card-sub">XGBoost 5-fold · ± 2.3%</p>
+        <span class="card-label">CV Recall (XGBoost)</span>
+        <p class="card-sub">5-fold stratified · ± 2.3%</p>
       </div>
       <div class="card">
         <span class="card-value">0.920</span>
         <span class="card-label">ROC-AUC</span>
-        <p class="card-sub">Best across all 4 models</p>
+        <p class="card-sub">Best across all 4 tuned models</p>
       </div>
       <div class="card">
         <span class="card-value">66.7%</span>
@@ -525,9 +526,9 @@
         <p class="card-sub">2 of 3 flagged leads convert</p>
       </div>
       <div class="card">
-        <span class="card-value">83.0%</span>
-        <span class="card-label">Accuracy</span>
-        <p class="card-sub">Overall correct classifications</p>
+        <span class="card-value">88.1%</span>
+        <span class="card-label">Test Recall</span>
+        <p class="card-sub">On held-out 1,384 leads (30%)</p>
       </div>
     </div>
 
@@ -681,13 +682,13 @@
 <rect x="290.4" y="159.1" width="28.0" height="13.9" fill="#94a3b8" rx="1"/>
 <rect x="290.4" y="144.7" width="28.0" height="14.5" fill="#16a34a" rx="1"/>
 <text x="304.4" y="184" text-anchor="middle" font-size="6.8" fill="#78716c">2.2k</text>
-<text x="180" y="208" text-anchor="middle" font-size="7.5" fill="#78716c">Minutes</text>
+<text x="180" y="208" text-anchor="middle" font-size="7.5" fill="#78716c">Seconds on Site</text>
 <rect x="225" y="26" width="8" height="8" fill="#94a3b8" rx="1"/>
 <text x="235" y="33" font-size="7" fill="#78716c">Not converted</text>
 <rect x="225" y="38" width="8" height="8" fill="#16a34a" rx="1"/>
 <text x="235" y="45" font-size="7" fill="#78716c">Converted</text>
 </svg>
-        <p style="font-size:.71rem;color:var(--muted);margin-top:.35rem;text-align:center;">Bimodal. Heavy left tail of quick browsers (0-400 min) who rarely convert. At 400+ minutes, green becomes the majority.</p>
+        <p style="font-size:.71rem;color:var(--muted);margin-top:.35rem;text-align:center;">Bimodal. Heavy left tail of quick browsers (0–400 sec) who rarely convert. At 900+ seconds (~15 min), green becomes the majority — marking the engagement threshold.</p>
       </div>
     </div>
     <div class="card-row cols-2" style="margin-bottom:2rem;">
@@ -1000,14 +1001,14 @@
             <div class="compare-pair">
               <div class="compare-box" style="background:#fee2e2;">
                 <span class="cval" style="color:#991b1b">577</span>
-                <span class="clbl" style="color:#dc2626">min · not converted</span>
+                <span class="clbl" style="color:#dc2626">sec · not converted</span>
               </div>
               <div class="compare-box" style="background:#dcfce7;">
                 <span class="cval" style="color:#166534">1,068</span>
-                <span class="clbl" style="color:#16a34a">min · converted</span>
+                <span class="clbl" style="color:#16a34a">sec · converted</span>
               </div>
             </div>
-            <div style="margin-top:.5rem;font-size:.75rem;color:var(--muted);">Converted leads spend 85% more time on site. Medium effect size despite large sample.</div>
+            <div style="margin-top:.5rem;font-size:.75rem;color:var(--muted);">Converted leads spend 85% more time on site (1,068 sec ≈ 18 min vs. 577 sec ≈ 10 min). Medium effect size despite large sample.</div>
           </div>
 
           <div>
@@ -1190,7 +1191,7 @@
         <div style="margin-top:1.5rem;">
           <div class="callout" style="margin-bottom:0;">
             <strong>Time on website is the decisive signal</strong>
-            <p>Converted leads average 1,068 minutes vs. 577 for non-converted: an 85% gap
+            <p>Converted leads average 1,068 seconds (~18 min) vs. 577 seconds (~10 min) for non-converted: an 85% gap
             with a medium effect size (d = 0.692, p = 1.7×10⁻⁸⁴). This is the strongest
             continuous predictor in the dataset.</p>
           </div>
@@ -1458,18 +1459,21 @@
     <p class="section-eyebrow">Model Comparison</p>
     <h2 class="section-title">Four Models, One Winner</h2>
     <p class="section-desc">
-      Logistic Regression, Decision Tree, Random Forest, and XGBoost were each trained with
-      5-fold cross-validation. Recall was the primary selection metric: in a lead scoring
-      context, a missed converter costs more than a wasted call. Final metrics below are from
-      a held-out test set of 1,384 leads. XGBoost was selected for its highest ROC-AUC (0.920)
-      and best cross-validated recall (87.9% ± 2.3%). The Decision Tree had higher single-run
-      test recall (90.1%) but with nearly 3× more variance (± 5.6%), indicating it was less stable.
+      All four models were trained with 5-fold stratified cross-validation. Recall was the
+      primary tuning metric throughout: missing a likely converter costs ~$5,000 in lost revenue
+      vs. ~$50 for a wasted call. Logistic Regression regularization (C, penalty) was tuned
+      via GridSearchCV for a fair comparison with the ensemble models. Decision Tree and Random
+      Forest used GridSearchCV; XGBoost used RandomizedSearchCV with 50 candidates.
+      Final metrics are from a held-out test set of 1,384 leads (30%). XGBoost was selected
+      for its highest ROC-AUC (0.920) and best cross-validated recall (87.9% ± 2.3%).
+      The Decision Tree had higher single-run test recall (90.1%) but nearly 3× more variance
+      (±5.6%), indicating instability in production.
     </p>
 
     <div class="model-grid">
 
       <div class="model-card">
-        <p class="model-name">Logistic Regression</p>
+        <p class="model-name">Logistic Regression <span style="font-weight:400;font-size:.65rem;color:var(--muted);">(Tuned)</span></p>
         <span class="model-auc">0.882</span>
         <span class="card-label">ROC-AUC</span>
         <div class="model-metrics">
@@ -1689,8 +1693,10 @@
     <p class="section-eyebrow">Feature Importance</p>
     <h2 class="section-title" style="font-size:1.6rem;margin-bottom:0.6rem;">What Drives the Predictions</h2>
     <p class="section-desc" style="margin-bottom:1.5rem;">
-      Permutation importance measures how much model recall drops when each feature is shuffled.
-      Only 6 features have meaningful predictive impact. The rest contribute essentially nothing.
+      Permutation importance measures how much model recall drops when each feature is shuffled
+      (30 repeats on the test set). Only 6 features have meaningful predictive impact. The rest
+      contribute essentially nothing — and are candidates for removal in a leaner production model.
+      Calibration curves and learning curves are available in the full notebook (Sections 7.3–7.4).
     </p>
 
     <div class="card">
