@@ -826,17 +826,22 @@
     </div>
 
     <div class="callout green-callout">
-      <strong>Model selection for H5</strong>
-      <p>Logistic Regression outperformed Gradient Boosting on the validation set (LR val AUC 0.710
-      vs. GB 0.716 — GB slightly higher but LR was selected for interpretability and regularization
-      properties). Test AUC: LR 0.716, GB 0.721.</p>
+      <strong>Model selection for H5 — and why it matters</strong>
+      <p>On the validation set, Gradient Boosting achieved a higher AUC (0.716) than Logistic
+      Regression (0.710). LR was selected anyway, for a specific reason: <em>elo_combined_prob
+      is itself a calibrated sigmoid probability</em>. LR can express that signal directly through
+      a single linear coefficient; GB adds no meaningful nonlinearity on top of an already-calibrated
+      input. Selecting LR here is a modeling choice, not a data-driven one — and that distinction
+      is important to state explicitly. Test AUC: LR 0.716, GB 0.721.</p>
     </div>
 
     <div class="callout">
       <strong>H4 is not a failure — it is a finding</strong>
       <p>Serve statistics carry real signal (H2 showed this), but that signal is already captured by
-      ATP rankings. Adding serve features on top of ranking features produces no statistically
-      significant lift (p=0.715). Signal interactions matter; testing sequentially reveals the truth.</p>
+      ATP rankings. Adding serve features on top of ranking features <em>marginally degraded</em>
+      performance (−0.001 AUC, from 0.707 to 0.706) — not significantly (p=0.715), but the direction
+      is negative. Serve style is already priced into where players are ranked. Testing sequentially
+      reveals this; testing jointly would have buried it.</p>
     </div>
 
     <hr class="divider" />
@@ -848,42 +853,42 @@
     <div class="two-col">
       <div class="card">
         <p class="card-title">H5 ELO Model — LR Coefficients</p>
-        <p class="card-body-text">Absolute coefficient magnitude. elo_combined_prob carries 51.8% of total coefficient mass — a single feature that captures trajectory and surface form.</p>
+        <p class="card-body-text">Share of total absolute coefficient mass. elo_combined_prob carries 27.3% — the single largest contributor, but notably age_experience and rank_diff_log each contribute over 12%, showing the model distributes weight across multiple signals.</p>
         <div class="bar-chart">
           <div class="bar-row" style="gap:0.5rem;">
             <span class="bar-label" style="min-width:150px;font-size:0.78rem;">elo_combined_prob</span>
             <div class="bar-track"><div class="bar-fill gold" style="width:100%"></div></div>
-            <span class="bar-pct">0.52</span>
+            <span class="bar-pct">27.3%</span>
+          </div>
+          <div class="bar-row" style="gap:0.5rem;">
+            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">age_experience</span>
+            <div class="bar-track"><div class="bar-fill blue" style="width:46.5%"></div></div>
+            <span class="bar-pct">12.7%</span>
           </div>
           <div class="bar-row" style="gap:0.5rem;">
             <span class="bar-label" style="min-width:150px;font-size:0.78rem;">rank_diff_log</span>
-            <div class="bar-track"><div class="bar-fill blue" style="width:34.6%"></div></div>
-            <span class="bar-pct">0.18</span>
+            <div class="bar-track"><div class="bar-fill blue" style="width:46.2%"></div></div>
+            <span class="bar-pct">12.6%</span>
+          </div>
+          <div class="bar-row" style="gap:0.5rem;">
+            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">career_matches</span>
+            <div class="bar-track"><div class="bar-fill slate" style="width:40.7%"></div></div>
+            <span class="bar-pct">11.1%</span>
+          </div>
+          <div class="bar-row" style="gap:0.5rem;">
+            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">rank_ratio</span>
+            <div class="bar-track"><div class="bar-fill slate" style="width:34.4%"></div></div>
+            <span class="bar-pct">9.4%</span>
           </div>
           <div class="bar-row" style="gap:0.5rem;">
             <span class="bar-label" style="min-width:150px;font-size:0.78rem;">career_win_rate</span>
-            <div class="bar-track"><div class="bar-fill slate" style="width:17.3%"></div></div>
-            <span class="bar-pct">0.09</span>
-          </div>
-          <div class="bar-row" style="gap:0.5rem;">
-            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">form_last_20</span>
-            <div class="bar-track"><div class="bar-fill slate" style="width:13.5%"></div></div>
-            <span class="bar-pct">0.07</span>
+            <div class="bar-track"><div class="bar-fill slate" style="width:22.0%"></div></div>
+            <span class="bar-pct">6.0%</span>
           </div>
           <div class="bar-row" style="gap:0.5rem;">
             <span class="bar-label" style="min-width:150px;font-size:0.78rem;">surface_win_rate</span>
-            <div class="bar-track"><div class="bar-fill slate" style="width:11.5%"></div></div>
-            <span class="bar-pct">0.06</span>
-          </div>
-          <div class="bar-row" style="gap:0.5rem;">
-            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">level_win_rate</span>
-            <div class="bar-track"><div class="bar-fill slate" style="width:9.6%"></div></div>
-            <span class="bar-pct">0.05</span>
-          </div>
-          <div class="bar-row" style="gap:0.5rem;">
-            <span class="bar-label" style="min-width:150px;font-size:0.78rem;">h2h_win_rate</span>
-            <div class="bar-track"><div class="bar-fill slate" style="width:5.8%"></div></div>
-            <span class="bar-pct">0.03</span>
+            <div class="bar-track"><div class="bar-fill slate" style="width:18.0%"></div></div>
+            <span class="bar-pct">4.9%</span>
           </div>
         </div>
       </div>
@@ -980,15 +985,24 @@
 
     <p class="section-eyebrow">Segment Breakdown</p>
     <p class="sub-title">Accuracy by Tournament Level and Surface</p>
-    <p class="sub-desc">Wilson confidence intervals computed at 95%. Segment match counts are approximate; the overall count is exact from the held-out test set.</p>
+    <p class="sub-desc">Wilson confidence intervals at 95%. All match counts are exact from the held-out 2024 test set. Accuracy on Grand Slams (72.6%) and top-10 matchups (74.1%) substantially exceeds the overall figure — the model works best where ranking signals are most reliable.</p>
+
+    <div class="callout green-callout" style="margin-bottom:1.5rem;">
+      <strong>Grand Slam accuracy: 72.6% (95% CI: 69.8%–75.3%)</strong>
+      <p>The 508 Grand Slam matches in the 2024 test set are predicted correctly nearly 3 in 4 times.
+      At the highest-stakes events — where the field is strongest and ATP rankings best reflect true
+      player quality — the model's signal is most reliable. This is a +7.9 percentage point premium
+      over the overall test accuracy.</p>
+    </div>
 
     <table class="seg-table">
       <thead>
         <tr>
           <th>Segment</th>
-          <th>Approx. Matches</th>
+          <th>Matches</th>
           <th>Accuracy</th>
           <th>95% Wilson CI</th>
+          <th>Edge vs. 50%</th>
         </tr>
       </thead>
       <tbody>
@@ -997,42 +1011,70 @@
           <td>2,745</td>
           <td>64.7%</td>
           <td>[63.5%, 66.0%]</td>
+          <td>+14.7pp</td>
         </tr>
         <tr>
           <td>Grand Slams</td>
-          <td>~580</td>
-          <td>~66%</td>
-          <td>[62.1%, 69.8%]</td>
+          <td>508</td>
+          <td><strong>72.6%</strong></td>
+          <td>[69.8%, 75.3%]</td>
+          <td>+22.6pp</td>
         </tr>
         <tr>
           <td>Masters 1000</td>
-          <td>~940</td>
-          <td>~65%</td>
-          <td>[62.0%, 67.9%]</td>
+          <td>695</td>
+          <td>65.5%</td>
+          <td>[62.9%, 67.9%]</td>
+          <td>+15.5pp</td>
         </tr>
         <tr>
           <td>ATP Tour</td>
-          <td>~1,225</td>
-          <td>~63%</td>
-          <td>[60.3%, 65.7%]</td>
+          <td>1,542</td>
+          <td>61.8%</td>
+          <td>[60.1%, 63.5%]</td>
+          <td>+11.8pp</td>
         </tr>
         <tr>
           <td>Hard Court</td>
-          <td>~1,600</td>
-          <td>~65%</td>
-          <td>[62.7%, 67.3%]</td>
+          <td>1,562</td>
+          <td>64.8%</td>
+          <td>[63.1%, 66.5%]</td>
+          <td>+14.8pp</td>
         </tr>
         <tr>
           <td>Clay</td>
-          <td>~620</td>
-          <td>~64%</td>
-          <td>[60.2%, 67.7%]</td>
+          <td>859</td>
+          <td>64.8%</td>
+          <td>[62.5%, 67.0%]</td>
+          <td>+14.8pp</td>
         </tr>
         <tr>
           <td>Grass</td>
-          <td>~525</td>
-          <td>~65%</td>
-          <td>[60.9%, 69.0%]</td>
+          <td>324</td>
+          <td>64.2%</td>
+          <td>[60.4%, 67.8%]</td>
+          <td>+14.2pp</td>
+        </tr>
+        <tr>
+          <td>Top-10 matchups</td>
+          <td>322</td>
+          <td><strong>74.1%</strong></td>
+          <td>[70.6%, 77.3%]</td>
+          <td>+24.1pp</td>
+        </tr>
+        <tr>
+          <td>Close matches (ELO diff &lt; 50)</td>
+          <td>718</td>
+          <td>56.4%</td>
+          <td>[53.9%, 59.0%]</td>
+          <td>+6.4pp</td>
+        </tr>
+        <tr>
+          <td>Clear favourite (ELO diff &gt; 150)</td>
+          <td>888</td>
+          <td><strong>76.3%</strong></td>
+          <td>[74.3%, 78.2%]</td>
+          <td>+26.3pp</td>
         </tr>
       </tbody>
     </table>
@@ -1062,15 +1104,15 @@
       </div>
       <div class="card">
         <p class="card-title">Custom ELO adds real signal</p>
-        <p class="card-body-text">elo_combined_prob is the single most important feature (51.8% of LR coefficient mass). It captures player trajectory and surface-specific momentum that point-in-time rankings miss. The lift is modest (+0.009 AUC) but statistically robust (p=0.012).</p>
+        <p class="card-body-text">elo_combined_prob is the single most important feature (27.3% of LR coefficient mass). It captures player trajectory and surface-specific momentum that point-in-time rankings miss. The lift is modest (+0.009 AUC) but statistically robust (p=0.012). Notably, the model distributes remaining weight across ranking, career, and form features — not a one-variable model.</p>
       </div>
       <div class="card">
         <p class="card-title">Serve profile doesn't beat rankings alone</p>
         <p class="card-body-text">H4 failed to reject. Serve statistics are real predictors (H2 showed AUC 0.608 from serve alone), but they are already embedded in official rankings. They add lift only once ELO has extracted the residual variance rankings miss (H6, p=0.004).</p>
       </div>
       <div class="card">
-        <p class="card-title">65% is near the theoretical ceiling</p>
-        <p class="card-body-text">With only pre-match public data, prediction accuracy above 65% is likely limited by true randomness in match outcomes. Brier Score 0.215 vs. 0.250 random baseline indicates well-calibrated, honest predictions — not inflated by leakage.</p>
+        <p class="card-title">65% may be near the practical ceiling — with caveats</p>
+        <p class="card-body-text">Pre-match public data likely cannot push prediction accuracy far beyond 65% due to inherent variance in individual match outcomes. This is consistent with published tennis prediction literature, though the specific ceiling for this dataset has not been formally estimated. Brier Score 0.215 vs. 0.250 random confirms well-calibrated predictions — not inflated by leakage.</p>
       </div>
     </div>
 
@@ -1103,7 +1145,7 @@
       </li>
       <li>
         <span class="c-badge nrej">H4 Not Rejected</span>
-        <span class="c-text"><strong>Serve stats do not add to ATP rankings alone</strong> — AUC 0.706, no statistically significant lift (p = 0.715). Serve signal is already priced into rankings.</span>
+        <span class="c-text"><strong>Serve stats do not add to ATP rankings alone</strong> — AUC 0.706 (−0.001 vs. H3), a marginal decrease that is not statistically significant (p = 0.715). Serve signal is already priced into rankings; adding it slightly degrades, not improves, performance.</span>
       </li>
       <li>
         <span class="c-badge rej">H5 Rejected</span>
@@ -1114,6 +1156,31 @@
         <span class="c-text"><strong>ELO + Serve beats ELO alone and the ATP baseline</strong> — AUC 0.722, 65.3% accuracy (p = 0.004). Serve stats finally add lift once ELO residual variance is available.</span>
       </li>
     </ul>
+
+    <hr class="divider" />
+
+    <p class="section-eyebrow">Honest Accounting</p>
+    <p class="sub-title">Known Limitations</p>
+    <p class="sub-desc">A model without a limitations section is a model with hidden ones. These are the material constraints on the claims made above.</p>
+
+    <div class="card-row cols-2" style="margin-bottom:2rem;">
+      <div class="card">
+        <p class="card-title">ELO cold-start (2015 data)</p>
+        <p class="card-body-text">All players begin at ELO 1,500 in January 2015 with no warm-up period. The first 18–24 months of training data have ELO signals converging from the same arbitrary starting point — variance in <em>elo_combined_prob</em> is artificially compressed in 2015–2016. A proper implementation would use 2013–2014 data purely for burn-in before training begins. This likely reduces the noisiness of early training records but does not invalidate test-set results (2024 ratings are fully converged).</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Bootstrap samples records, not matches</p>
+        <p class="card-body-text">The 10,000-iteration bootstrap resamples from 5,490 player records, but these are 2,745 matched pairs (one winner, one loser per match). Sampling records independently breaks those pairs and slightly inflates the effective sample size. Reported p-values are approximately correct but may be marginally anti-conservative — p=0.012 for H5 could be closer to p=0.02–0.03 under a match-level bootstrap. Results are directionally robust; the ELO lift remains significant under conservative assumptions.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Serve data coverage gap</p>
+        <p class="card-body-text">Serve statistics have ~98.9% coverage across the dataset. Models using serve features (H2, H4, H6) may train and test on a slightly different pool of records than ranking-only models (H3, H5). If the ~1.1% of missing-serve records are systematically different from the rest (e.g., concentrated in certain tournaments or years), cross-model AUC comparisons are not on perfectly identical test sets. The effect is small but has not been formally corrected.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">No hyperparameter optimisation</p>
+        <p class="card-body-text">Gradient Boosting models (H3, H4, H6) use fixed hyperparameters rather than systematic search. Bayesian optimisation or grid search on the validation set may improve performance for these models — particularly H3, which is the primary benchmark. If GB performance improves under optimisation, the ELO lift (H5) and the H4 null result could narrow or shift. This is the most actionable next step for improving the analysis.</p>
+      </div>
+    </div>
 
   </div><!-- /conclusions -->
 
