@@ -1875,6 +1875,50 @@
       </div>
     </div>
 
+    <!-- ── SENSITIVITY ANALYSIS ── -->
+    <p class="section-eyebrow">Sensitivity Analysis</p>
+    <p class="sub-title">How ACV Assumptions Drive the Dollar Figure</p>
+    <div class="card" style="margin-bottom:2rem;">
+      <p class="card-body-text" style="margin-bottom:1rem;">The $8.7M figure assumes a $5,000 ACV. The model's lift over random selection — 145.3 incremental conversions per month at the top-40% cutoff — is fixed by the predictions and does not change with ACV. Only the dollar magnitude scales. The table below shows the range across plausible EdTech price points.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border);">
+            <th style="text-align:left;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">ACV Scenario</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Monthly Incremental Profit</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Annual Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">$500 — short course</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$73K</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$871K</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">$1,000 — certificate program</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$145K</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$1.7M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">$2,500 — bootcamp</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$363K</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$4.4M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);background:#f0fdf4;">
+            <td style="padding:.5rem .65rem;font-weight:600;">$5,000 — full program (base case)</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;color:#166534;">$726K</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;color:#166534;">$8.7M</td>
+          </tr>
+          <tr>
+            <td style="padding:.5rem .65rem;">$10,000 — premium / enterprise</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$1.45M</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~$17.4M</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:.6rem;">Monthly lead volume (1,000) is an operational assumption — the dataset has no timestamps. At 500 leads/month all figures halve; at 2,000 they double. The relative advantage of model-guided over random contact holds regardless of volume.</p>
+    </div>
+
     <p class="section-eyebrow" style="margin-bottom:0.75rem;">Decile Analysis: Model Predicted Probability vs. Actual Conversion</p>
     <div class="card" style="margin-bottom:2rem;">
       <div class="decile-grid">

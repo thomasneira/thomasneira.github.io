@@ -122,10 +122,10 @@ All hypotheses were supported with strong effect sizes:
 
 | Model | Recall | Precision | ROC-AUC | F1 |
 |-------|--------|-----------|---------|-----|
-| Logistic Regression | 78% | 65% | 0.83 | 0.71 |
-| Decision Tree | 82% | 58% | 0.79 | 0.68 |
-| Random Forest | 84% | 68% | 0.86 | 0.75 |
-| **XGBoost** | **88%** | **72%** | **0.92** | **0.79** |
+| Logistic Regression (Tuned) | 83.5% | 63.0% | 0.882 | 0.72 |
+| Decision Tree (Tuned) | 90.1% | 59.7% | 0.870 | 0.72 |
+| Random Forest (Tuned) | 83.3% | 69.8% | 0.917 | 0.76 |
+| **XGBoost (Tuned)** | **88.1%** | **66.7%** | **0.920** | **0.76** |
 
 ### Business Impact
 
