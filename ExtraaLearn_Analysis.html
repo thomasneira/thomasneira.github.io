@@ -434,8 +434,8 @@
       <span class="hero-stat-label">Best Model AUC</span>
     </div>
     <div>
-      <span class="hero-stat-value">$8.7M</span>
-      <span class="hero-stat-label">Projected Annual Impact</span>
+      <span class="hero-stat-value">145</span>
+      <span class="hero-stat-label">Incremental Conversions / 1K Leads</span>
     </div>
   </div>
 </div>
@@ -1759,20 +1759,21 @@
   ══════════════════════════════════════════ -->
   <div class="section" id="business">
 
-    <p class="section-eyebrow">Optimal Strategy</p>
-    <h2 class="section-title">Contact the Top 40%,<br>Capture the Most Value</h2>
+    <p class="section-eyebrow">Model Business Value</p>
+    <h2 class="section-title">145 Additional Conversions<br>Per 1,000 Leads</h2>
     <p class="section-desc">
-      Decile analysis reveals the model concentrates nearly all convertible leads in the top
-      30–40% by predicted probability. Contacting beyond that threshold produces rapidly
-      diminishing returns. At 1,000 monthly leads and $5,000 ACV, the optimal cutoff yields
-      $726K in monthly incremental profit.
+      Contacting the top-ranked 40% of scored leads produces 145 more conversions per 1,000
+      leads than random selection of the same size — a 2.5× efficiency gain derived directly
+      from test-set predictions. Dollar impact scales with ACV and lead volume; see the
+      sensitivity tables below.
     </p>
 
     <div class="callout green-callout">
-      <strong>Optimal threshold: Top 40% of scored leads</strong>
-      <p>Contacting the top 400 leads per 1,000 captures 88.4% of all likely converters
-      (264.7 of 299) while avoiding 600 low-probability contacts. Monthly incremental
-      profit: $726,551. Annual: $8,718,613.</p>
+      <strong>What the data proves (no pricing assumptions required)</strong>
+      <p>Top 40% contact captures 88.4% of all converters (264.7 of 299) while skipping
+      600 low-probability leads. Top-decile conversion rate: 93.2% vs. 29.9% baseline —
+      a 3.1× lift. The break-even ACV for recovering model development costs (~$30K)
+      is approximately $210 per conversion — below virtually any EdTech program price point.</p>
     </div>
 
     <div class="card-row cols-4" style="margin-bottom:2rem;">
@@ -1787,14 +1788,14 @@
         <p class="card-sub">264 of 299 expected conversions</p>
       </div>
       <div class="card">
-        <span class="card-value gold">$727K</span>
-        <span class="card-label">Monthly Incremental Profit</span>
-        <p class="card-sub">vs. random contact baseline</p>
+        <span class="card-value gold">145</span>
+        <span class="card-label">Incremental Conversions / 1K Leads</span>
+        <p class="card-sub">Data-derived; no pricing assumptions</p>
       </div>
       <div class="card">
-        <span class="card-value">$8.7M</span>
-        <span class="card-label">Projected Annual Impact</span>
-        <p class="card-sub">Assumptions: ACV $5K, cost $50/contact</p>
+        <span class="card-value">2.5×</span>
+        <span class="card-label">Sales Efficiency Gain</span>
+        <p class="card-sub">More conversions per contact vs. random</p>
       </div>
     </div>
 
@@ -1917,6 +1918,82 @@
         </tbody>
       </table>
       <p style="font-size:.72rem;color:var(--muted);margin-top:.6rem;">Monthly lead volume (1,000) is an operational assumption — the dataset has no timestamps. At 500 leads/month all figures halve; at 2,000 they double. The relative advantage of model-guided over random contact holds regardless of volume.</p>
+    </div>
+
+    <!-- ── DIMINISHING RETURNS TABLE ── -->
+    <p class="section-eyebrow">Scaling Sensitivity</p>
+    <p class="sub-title">Lead Volume Growth with Diminishing Returns</p>
+    <div class="card" style="margin-bottom:2rem;">
+      <p class="card-body-text" style="margin-bottom:1rem;">
+        The 145 incremental conversions per 1,000 leads is calibrated to ExtraaLearn's current
+        population (~30% baseline conversion). Scaling beyond the current pipeline means reaching
+        lower-intent audiences — wider channels, broader targeting, less self-selected traffic.
+        Both the baseline conversion rate and the model's per-unit lift decline as a result.
+        Doubling lead volume does <em>not</em> double the impact.
+      </p>
+      <table style="width:100%;border-collapse:collapse;font-size:.8rem;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border);">
+            <th style="text-align:left;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Growth Stage</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Monthly Leads</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Assumed Baseline Conv.</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Est. Inc. Conv./1K</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Total Inc. Conv./Mo.</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Annual @ $500</th>
+            <th style="text-align:right;padding:.5rem .65rem;font-weight:600;color:var(--text-secondary);">Annual @ $1,500</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">Seed — organic only</td>
+            <td style="padding:.5rem .65rem;text-align:right;">250</td>
+            <td style="padding:.5rem .65rem;text-align:right;">30%</td>
+            <td style="padding:.5rem .65rem;text-align:right;">145</td>
+            <td style="padding:.5rem .65rem;text-align:right;">36</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$216K</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$649K</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);background:#f0fdf4;">
+            <td style="padding:.5rem .65rem;font-weight:600;">Current scale — organic + light paid</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">1,000</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">30%</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">145</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">145</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">$870K</td>
+            <td style="padding:.5rem .65rem;text-align:right;font-weight:600;">$2.6M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">Growth — paid + email expansion</td>
+            <td style="padding:.5rem .65rem;text-align:right;">2,000</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~25%</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~120</td>
+            <td style="padding:.5rem .65rem;text-align:right;">240</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$1.4M</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$4.3M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:.5rem .65rem;">Scale-up — broad digital + partnerships</td>
+            <td style="padding:.5rem .65rem;text-align:right;">5,000</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~18%</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~85</td>
+            <td style="padding:.5rem .65rem;text-align:right;">425</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$2.6M</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$7.7M</td>
+          </tr>
+          <tr>
+            <td style="padding:.5rem .65rem;">Mass market — broad awareness</td>
+            <td style="padding:.5rem .65rem;text-align:right;">10,000</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~12%</td>
+            <td style="padding:.5rem .65rem;text-align:right;">~55</td>
+            <td style="padding:.5rem .65rem;text-align:right;">550</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$3.3M</td>
+            <td style="padding:.5rem .65rem;text-align:right;">$9.9M</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:.6rem;">
+        Baseline conversion rate decline and per-unit lift degradation are estimated assumptions, not modeled from data (no time-series available). Degradation factor: ~15% per lead-volume doubling beyond current scale. Dollar figures assume top-40% contact strategy throughout.
+      </p>
     </div>
 
     <p class="section-eyebrow" style="margin-bottom:0.75rem;">Decile Analysis: Model Predicted Probability vs. Actual Conversion</p>
