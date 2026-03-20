@@ -326,45 +326,43 @@
       <div class="project-card">
         <div class="project-meta">
           <span class="tag">Machine Learning</span>
-          <span class="tag">Elo Rating</span>
-          <span class="tag">Time Series</span>
+          <span class="tag">ELO Systems</span>
+          <span class="tag">Hypothesis Testing</span>
           <span class="tag">Python</span>
         </div>
-        <h3>ATP Match Prediction: Elo-Driven Classification</h3>
-        <p class="subtitle">Sports Analytics · Feature Engineering · Temporal Validation</p>
+        <h3>ATP Match Prediction — Does Serve Profile Beat Rankings?</h3>
+        <p class="subtitle">Tennis Analytics · Signal Decomposition · Bootstrap Inference</p>
         <p>
-          Built a predictive model for ATP tennis match outcomes using 10 years of elite
-          tournament data (2015–2024). The core insight: rather than feeding raw stats into
-          a classifier, I engineered five Elo-derived features capturing relative player
-          strength — both overall and surface-specific — then applied strict temporal
-          validation to ensure no future information leaked into training. A Logistic
-          Regression on those five features outperformed raw-ranking and Elo-only baselines.
+          Six null hypotheses tested in sequence on 25,245 elite ATP matches (2015–2024).
+          Each model isolates one source of signal — physical context, serve statistics,
+          official rankings, custom ELO — and a bootstrap significance test determines whether
+          each adds lift over the prior model. The same incremental logic I use daily in
+          marketing attribution: does this new signal beat the baseline we already have?
         </p>
         <div class="metrics">
           <div class="metric">
-            <span class="metric-value">64.2%</span>
-            <span class="metric-label">Test Accuracy</span>
+            <span class="metric-value">65.3%</span>
+            <span class="metric-label">Prediction Accuracy</span>
           </div>
           <div class="metric">
-            <span class="metric-value">0.702</span>
-            <span class="metric-label">ROC-AUC</span>
+            <span class="metric-value">0.722</span>
+            <span class="metric-label">ROC-AUC (ELO+Serve)</span>
           </div>
           <div class="metric">
-            <span class="metric-value">25,245</span>
-            <span class="metric-label">Elite Matches</span>
+            <span class="metric-value">p=0.012</span>
+            <span class="metric-label">ELO vs Rankings</span>
           </div>
           <div class="metric">
-            <span class="metric-value">+14.2pp</span>
-            <span class="metric-label">Over Random Baseline</span>
+            <span class="metric-value">4/6</span>
+            <span class="metric-label">Hypotheses Rejected</span>
           </div>
         </div>
         <div class="project-footer">
           <span class="finding">
-            elo_combined_prob alone accounts for 51.8% of feature importance across models
-            (z = 20.47, p &lt; 0.001)
+            ELO significantly outperforms ATP rankings (AUC +0.009, p=0.012);
+            serve stats do not add to rankings alone (p=0.71), but do add to ELO (p=0.004)
           </span>
           <a class="btn btn-primary" href="TennisAnalytics_Prediction.html" target="_blank">View Analysis →</a>
-          <a class="btn btn-secondary" href="Tennis_Match_Prediction_Portfolio.ipynb" target="_blank">Notebook</a>
         </div>
       </div>
 
