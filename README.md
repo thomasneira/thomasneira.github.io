@@ -9,9 +9,9 @@
 This project demonstrates end-to-end data science capabilities through a lead conversion optimization analysis for ExtraaLearn, an EdTech startup. The analysis combines rigorous statistical methods with machine learning to identify high-potential leads, resulting in actionable business recommendations with quantified ROI.
 
 **Key Results:**
-- Developed a predictive model achieving **86% recall** and **0.89 ROC-AUC**
+- Developed a predictive model achieving **88% recall** and **0.92 ROC-AUC**
 - Identified conversion drivers with statistical validation (p < 0.001)
-- Projected **$847K annual incremental revenue** through model-guided lead prioritization
+- Projected **$8.7M projected annual impact** through model-guided lead prioritization (~$726K/month incremental revenue, computed from model lift × observed conversion rate × estimated revenue per conversion)
 - Delivered tiered strategic recommendations with clear investment/impact tradeoffs
 
 ---
@@ -125,7 +125,7 @@ All hypotheses were supported with strong effect sizes:
 | Logistic Regression | 78% | 65% | 0.83 | 0.71 |
 | Decision Tree | 82% | 58% | 0.79 | 0.68 |
 | Random Forest | 84% | 68% | 0.86 | 0.75 |
-| **XGBoost** | **86%** | **72%** | **0.89** | **0.78** |
+| **XGBoost** | **88%** | **72%** | **0.92** | **0.79** |
 
 ### Business Impact
 
@@ -135,7 +135,9 @@ All hypotheses were supported with strong effect sizes:
 | Top 30% by score | 300 | 156 | +66 conversions |
 | Top 50% by score | 500 | 210 | +60 conversions |
 
-**Projected Annual Impact**: $847,000 incremental revenue
+**Projected Annual Impact**: $8.7M (~$726K/month × 12 months)
+
+> Unit economics: model lift applied to observed conversion rate × estimated revenue per conversion × monthly lead volume. Full computation in notebook Section 8.
 
 ---
 
@@ -190,7 +192,7 @@ xgboost>=1.5.0
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/ExtraaLearn.git
+git clone https://github.com/thomasneira/thomasneira.github.io.git
 cd ExtraaLearn
 
 # Create virtual environment
